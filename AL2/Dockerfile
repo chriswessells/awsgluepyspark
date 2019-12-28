@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-RUN yum install -y java-sdk git python3 wget tar zip
+RUN yum install -y java-sdk git python3 wget tar zip pandoc
 
 RUN adduser glue -d /home/glue -s /bin/bash -m && chown -R glue:glue /home/glue 
 
@@ -45,3 +45,5 @@ RUN echo '# alias pip3' >> /home/glue/.bashrc && echo 'alias pip=pip3' >> /home/
 RUN cd $glue_libs && bash glue-setup.sh
 
 WORKDIR /home/glue
+
+RUN cp -rf /usr/local/share/applications/aws-glue-libs/awsglue .
