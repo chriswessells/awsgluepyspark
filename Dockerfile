@@ -38,9 +38,9 @@ ENV JAVA_HOME /usr/lib/jvm/java
 
 ENV PATH $maven_path:$spark_path:$glue_libs:$PATH
 
-RUN cat '# alias python3' >> /home/glue/.bashrc && cat 'alias python=python3' >> /home/glue/.bashrc
+RUN echo '# alias python3' >> /home/glue/.bashrc && echo 'alias python=python3' >> /home/glue/.bashrc
 
-RUN cat '# alias pip3' >> /home/glue/.bashrc && cat 'alias pip=pip3' >> /home/glue/.bashrc
+RUN echo '# alias pip3' >> /home/glue/.bashrc && echo 'alias pip=pip3' >> /home/glue/.bashrc
 
 RUN cd $glue_libs && bash glue-setup.sh
 
