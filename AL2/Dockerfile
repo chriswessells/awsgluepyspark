@@ -1,6 +1,8 @@
 FROM amazonlinux:2
 
-RUN yum install -y java-sdk git python3 wget tar zip pandoc
+RUN yum install -y git python3 wget tar zip pandoc which
+
+RUN yum install -y https://corretto.aws/downloads/latest/amazon-corretto-11-x64-al2-jdk.rpm
 
 RUN adduser glue -d /home/glue -s /bin/bash -m && chown -R glue:glue /home/glue 
 
@@ -24,6 +26,10 @@ RUN wget $glue_spark_url && tar -xzf $spark_zip && rm -f spark-2.4.3-bin-hadoop2
 
 RUN chown -R glue:glue /usr/local/share/applications
 
+RUN chown -R glue:glue /usr/local/lib
+
+RUN chown -R glue:glue /usr/local/bin
+
 USER glue
 
 ENV maven_path /usr/local/share/applications/apache-maven-3.6.0/bin
@@ -33,8 +39,6 @@ ENV spark_path /usr/local/share/applications/spark-2.4.3-bin-spark-2.4.3-bin-had
 ENV glue_libs /usr/local/share/applications/aws-glue-libs/bin
 
 ENV SPARK_HOME /usr/local/share/applications/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8
-
-ENV JAVA_HOME /usr/lib/jvm/java
 
 ENV PATH $maven_path:$spark_path:$glue_libs:$PATH
 
@@ -46,4 +50,6 @@ RUN cd $glue_libs && bash glue-setup.sh
 
 WORKDIR /home/glue
 
-RUN cp -rf /usr/local/share/applications/aws-glue-libs/awsglue .
+ENV PYTHONPATH $SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip:/usr/local/share/applications/aws-glue-libs/PyGlue.zip:$PYTHONPATH
+
+RUN pip install pytest
