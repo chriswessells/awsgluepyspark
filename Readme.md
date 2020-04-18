@@ -1,12 +1,25 @@
-# awsgluepyspark docker
+# Supported Tags
 
-Docker image with dependencies Spark, PySpark, Hadooop, and awsglue modules to speed the development of [AWS Glue](https://aws.amazon.com/glue/) ETL
-scripts. The images are built with the [amazonlinux2 base image](https://hub.docker.com/_/amazonlinux/).
+* [python3, 3.7, 3, latest](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2/Dockerfile) support for
+Python 3 with Glue 1.0
+* [python, 2.7, 2](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2_2.7/Dockerfile) support for Python
+2.7 with Glue 1.0
 
-## Supported Tags
+## Quick Reference
 
-* [python3, 3.7, 3, latest](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2/Dockerfile) support for Python 3 with Glue 1.0
-* [python, 2.7, 2](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2_2.7/Dockerfile) support for Python 2.7 with Glue 1.0
+* [AWS Glue Developer Documentation](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
+* [Testing AWS CodeBuild locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
+* [Adding external Python packages to AWS Glue Scripts](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html))
+
+## What is the awsgluepyspark container
+
+Docker image with dependencies Spark, PySpark, Hadooop, and awsglue modules to speed the development of
+[AWS Glue](https://aws.amazon.com/glue/) ETL scripts. The images are built with the
+[amazonlinux2 base image](https://hub.docker.com/_/amazonlinux/).
+
+AWSGluePySpark is a Docker container where you can run AWS Glue PySpark scripts. The AWSGluePySpark container is one
+piece of a larger process of applying the Test Driven Development (TDD) processes to developing AWS Glue scripts. The
+TDD process can increase the velocity when developing software.
 
 ## Python 3 libs
 
@@ -14,6 +27,12 @@ scripts. The images are built with the [amazonlinux2 base image](https://hub.doc
 * pip3
 * Glue 1.0
 * pytest
+* boto3
+* scypy
+* numpy
+* pandas
+* PyGreSQL
+* scikit-learn
 
 ## Python 2 libs
 
@@ -24,76 +43,30 @@ scripts. The images are built with the [amazonlinux2 base image](https://hub.doc
 
 ## Adding libraries
 
-The intended use is to help in automating Analytics workloads using AWS Glue. If you need libraries outside the default list of dependencies innstalled in 
-the default endpoints, [AWS Glue supports including packages to extend the builtin functionality.](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html)
+The intended use is to help in automating Analytics workloads using AWS Glue. If you need libraries outside the default
+list of dependencies innstalled in the default endpoints,
+[AWS Glue supports including packages](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html) to extend the
+builtin functionality.
 
-## Building the container
+## testing code with the container
 
-```
-git clone https://github.com/chriswessells/awsgluepyspark.git
-cd awsgluepyspark/AL2
-docker build -t awsgluepyspark .
-```
+Download the docker container for your version of Python.
 
-## Manual Test Usage
-
-The assumption is you know how to use Docker locally.
-
-1. Build the container on your local device.
-1. Have the path to the pyspark code available.
-
-```
+```bash
 docker run -v /path/to/pyspark:/home/glue --rm -it chriswessells/awsgluepyspark:latest
 ```
 
-The command above will place you in the glue home directory with your source code. For unit test files
-that use awsglue DynamicFrames, or the SparkContext use `gluepytest` to run pytest, otherwise use
-pytest.
+### AWS Glue testing commands
 
-```
-gluepytest tests/<function_name>_test.py
-```
+Conainer PATH includes the commands to test the glue scripts.
 
-The command above will use gluepytest to test the file.
+* gluepytest
+* gluepyspark
+* gluesparksubmit
 
-**NOTE:**
-*I added gluepytest, gluepyspark, and gluesparksubmit to the container's PATH. You can launch the
-container, mounting your working directory and run `gluepytest tests/<name of your file>` and it will
-run the tests. If you are not using the awsglue classes or modules just use `pytest`.*
+### Strategies to test scripts
 
-## Using AWS CodeBuild locally
+Instructions to setup environments are outside the scope of this repo.
 
-You will n eed to [Setup CodeBuild Agent Locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
-before you can move forward. I followed the instructions then renamed `codebuild_build.sh` to 
-`codebuild_build`, and made it executable. Then placed the script in my path so I could call it from
-anywhere in the filesystem.
-
-Navigate into your Glue scripts folder then run the command:
-
-```
-codebuild_build -i chriswessells/awsgluepyspark:latest -a /path/to/artifact/output -s /path/to/scripts
-```
-
-It will call the codebuild agent, launch the awsgluepyspark container, and test the Glue scripts.
-
-## Using AWS Developer Tools
-
-You can add the container to your AWS CodeBuild project to run the unittests on your AWS Glue 
-scripts. In the CodeBuild project change the container to:
-
-* Custom image
-* Linux Environment Type
-* Other Registry
-* chriswessells/awsgluepyspark:latest
-
-No credientals necessary
-
-## Quick reference
-
-* [Amazon Corretto 8](https://hub.docker.com/_/amazoncorretto) Docker help
-* [Setup CodeBuild Agent Locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
-
-## Requirements
-
-* Have docker installed
-* Have AWS Glue pyspark code setup for unit testing
+* [AWS CodeBuild Agent Locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
+* [Microsoft Visual Studio Code remote coding](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
