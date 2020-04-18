@@ -28,9 +28,9 @@ ENV PATH $maven_path:$spark_path:$glue_bin:$PATH
 
 WORKDIR /usr/local/share/applications
 
-RUN yum install -y git wget tar zip pandoc which \
+RUN yum install -y git wget tar zip pandoc which postgresql postgresql-devel gcc python-devel  \
     && python -m ensurepip --default-pip \
-    && pip install pytest \
+    && pip install pytest boto3 numpy scipy pandas PyGreSQL scikit-learn \
     && adduser glue -d /home/glue -s /bin/bash -m \
     && chown -R glue:glue /home/glue \
     && wget $maven_URL \

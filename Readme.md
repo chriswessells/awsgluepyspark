@@ -28,7 +28,7 @@ TDD process can increase the velocity when developing software.
 * Glue 1.0
 * pytest
 * boto3
-* scypy
+* scipy
 * numpy
 * pandas
 * PyGreSQL
@@ -40,6 +40,12 @@ TDD process can increase the velocity when developing software.
 * pip
 * Glue 1.0
 * pytest
+* boto3
+* scipy
+* numpy
+* pandas
+* PyGreSQL
+* scikit-learn
 
 ## Adding libraries
 
@@ -50,11 +56,8 @@ builtin functionality.
 
 ## testing code with the container
 
-Download the docker container for your version of Python.
-
-```bash
-docker run -v /path/to/pyspark:/home/glue --rm -it chriswessells/awsgluepyspark:latest
-```
+Download the docker container for your version of Python. A how-to for testing AWS Glue scripts are outside the scope.
+I included enough details for you to fill in the gaps and understand how the container works.
 
 ### AWS Glue testing commands
 
@@ -70,3 +73,10 @@ Instructions to setup environments are outside the scope of this repo.
 
 * [AWS CodeBuild Agent Locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
 * [Microsoft Visual Studio Code remote coding](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+## Contact
+
+If there is a problem using the container feel free to open an issue.
+
+* [Chris Wessells](https://github.com/chriswessells)
+* [Open issue](https://github.com/chriswessells/awsgluepyspark/issues)
