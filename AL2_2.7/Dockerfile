@@ -28,8 +28,9 @@ ENV PATH $maven_path:$spark_path:$glue_bin:$PATH
 
 WORKDIR /usr/local/share/applications
 
-RUN yum install -y git wget python3 tar zip pandoc which \
-    && pip3 install pytest \
+RUN yum install -y git wget tar zip pandoc which \
+    && python -m ensurepip --default-pip \
+    && pip install pytest \
     && adduser glue -d /home/glue -s /bin/bash -m \
     && chown -R glue:glue /home/glue \
     && wget $maven_URL \
@@ -54,7 +55,5 @@ RUN yum install -y git wget python3 tar zip pandoc which \
 USER glue
 
 WORKDIR /home/glue
-
-ENV PYSPARK_DRIVER_PYTHON python3
 
 ENV PYTHONPATH $SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip:$glue_lib/PyGlue.zip:$PYTHONPATH
