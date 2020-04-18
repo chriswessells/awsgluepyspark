@@ -1,8 +1,31 @@
 # awsgluepyspark docker
 
+Docker image with dependencies Spark, PySpark, Hadooop, and awsglue modules to speed the development of [AWS Glue](https://aws.amazon.com/glue/) ETL
+scripts. The images are built with the [amazonlinux2 base image](https://hub.docker.com/_/amazonlinux/).
 
+## Supported Tags
 
-Master respository where Dockerfiles for container for testing awsglue pyspark scripts are hosted.
+* [python3, 3.7, 3, latest](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2/Dockerfile) support for Python 3 with Glue 1.0
+* [python, 2.7, 2](https://github.com/chriswessells/awsgluepyspark/blob/master/AL2_2.7/Dockerfile) support for Python 2.7 with Glue 1.0
+
+## Python 3 libs
+
+* Python 3.7.5
+* pip3
+* Glue 1.0
+* pytest
+
+## Python 2 libs
+
+* Python 2.7.5
+* pip
+* Glue 1.0
+* pytest
+
+## Adding libraries
+
+The intended use is to help in automating Analytics workloads using AWS Glue. If you need libraries outside the default list of dependencies innstalled in 
+the default endpoints, [AWS Glue supports including packages to extend the builtin functionality.](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html)
 
 ## Building the container
 

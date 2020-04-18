@@ -28,7 +28,7 @@ ENV PATH $maven_path:$spark_path:$glue_bin:$PATH
 
 WORKDIR /usr/local/share/applications
 
-RUN yum install -y git wget python3 tar zip pandoc which \
+RUN yum install -y git wget python3 tar zip pandoc which python-numpy python-scipy python-pandas \
     && pip3 install pytest \
     && adduser glue -d /home/glue -s /bin/bash -m \
     && chown -R glue:glue /home/glue \
