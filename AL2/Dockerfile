@@ -57,4 +57,6 @@ WORKDIR /home/glue
 
 ENV PYSPARK_DRIVER_PYTHON python3
 
+ENV PYSPARK_PYTHON python3
+
 ENV PYTHONPATH $SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip:$glue_lib/PyGlue.zip:$PYTHONPATH
