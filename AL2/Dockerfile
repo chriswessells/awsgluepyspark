@@ -20,7 +20,7 @@ ENV SPARK_CONF_DIR /usr/local/share/applications/aws-glue-libs/conf
 
 ENV GLUE_JARS_DIR $glue_lib/jars
 
-ENV PATH $maven_path/bin:$SPARK_PATH/bin:$glue_lib/bin:$PATH
+ENV PATH $maven_path/bin:$SPARK_HOME/bin:$glue_lib/bin:$PATH
 
 WORKDIR /usr/local/share/applications
 
@@ -38,10 +38,11 @@ RUN yum install -y git wget python3 tar zip pandoc which gcc python3-devel postg
     && cd aws-glue-libs \
     && git checkout glue-1.0 \
     && cd $glue_lib/bin \
+    && sed -e '/rm \$SPARK/ s/^rm*/rm -f/' -i glue-setup.sh \
     && sh glue-setup.sh \
     && sed -e '/mvn/ s/^#*/#/' -i glue-setup.sh \
-    && cd ../../ && rm -rf aws-glue-libs/jarsv1/netty-all-4.0.23.Final.jar \
-    && cp spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8/jars/netty-all-4.1.17.Final.jar aws-glue-libs/jarsv1/ \
+    && rm -rf $glue_lib/jarsv1/netty-all-4.0.23.Final.jar \
+    && cp $SPARK_HOME/jars/netty-all-4.1.17.Final.jar $glue_lib/jarsv1/ \
     && chown -R glue:glue /usr/local/share/applications \
     && chown -R glue:glue /usr/local/lib \
     && chown -R glue:glue /usr/local/bin \

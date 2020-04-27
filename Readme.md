@@ -9,7 +9,7 @@ Python 3 with Glue 1.0
 
 * [AWS Glue Developer Documentation](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
 * [Testing AWS CodeBuild locally](https://docs.aws.amazon.com/codebuild/latest/userguide/use-codebuild-agent.html)
-* [Adding external Python packages to AWS Glue Scripts](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html))
+* [Adding external Python packages to AWS Glue Scripts](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html)
 
 ## What is the awsgluepyspark container
 
@@ -20,6 +20,9 @@ Docker image with dependencies Spark, PySpark, Hadooop, and awsglue modules to s
 AWSGluePySpark is a Docker container where you can run AWS Glue PySpark scripts. The AWSGluePySpark container is one
 piece of a larger process of applying the Test Driven Development (TDD) processes to developing AWS Glue scripts. The
 TDD process can increase the velocity when developing software.
+
+You can retrieve the docker image from docker hub:
+- https://hub.docker.com/r/chriswessells/awsgluepyspark
 
 ## Python 3 libs
 
@@ -50,7 +53,7 @@ TDD process can increase the velocity when developing software.
 ## Adding libraries
 
 The intended use is to help in automating Analytics workloads using AWS Glue. If you need libraries outside the default
-list of dependencies innstalled in the default endpoints,
+list of dependencies installed in the default endpoints,
 [AWS Glue supports including packages](https://docs.aws.amazon.com/glue/latest/dg/add-job-python.html) to extend the
 builtin functionality.
 
@@ -61,7 +64,7 @@ I included enough details for you to fill in the gaps and understand how the con
 
 ### AWS Glue testing commands
 
-Conainer PATH includes the commands to test the glue scripts.
+Container PATH includes the commands to test the glue scripts.
 
 * gluepytest
 * gluepyspark
