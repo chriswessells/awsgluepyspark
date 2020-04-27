@@ -2,29 +2,25 @@ FROM amazoncorretto:latest
 
 ENV glue_spark_url https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-1.0/spark-2.4.3-bin-hadoop2.8.tgz
 
-ENV spark_zip spark-2.4.3-bin-hadoop2.8.tgz
+ENV spark_zip spark-bin-hadoop.tgz
 
-ENV maven_URL https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-common/apache-maven-3.6.0-bin.tar.gz
+ENV maven_url https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-common/apache-maven-3.6.0-bin.tar.gz
 
-ENV maven_ZIP apache-maven-3.6.0-bin.tar.gz
+ENV maven_zip apache-maven-bin.tar.gz
 
 ENV glue_repo https://github.com/awslabs/aws-glue-libs
 
-ENV maven_path /usr/local/share/applications/apache-maven-3.6.0/bin
-
-ENV spark_path /usr/local/share/applications/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8/bin
+ENV maven_path /usr/local/share/applications/apache-maven
 
 ENV glue_lib /usr/local/share/applications/aws-glue-libs
 
-ENV glue_bin /usr/local/share/applications/aws-glue-libs/bin
-
-ENV SPARK_HOME /usr/local/share/applications/spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8
+ENV SPARK_HOME /usr/local/share/applications/spark-home
 
 ENV SPARK_CONF_DIR /usr/local/share/applications/aws-glue-libs/conf
 
 ENV GLUE_JARS_DIR $glue_lib/jars
 
-ENV PATH $maven_path:$spark_path:$glue_bin:$PATH
+ENV PATH $maven_path/bin:$SPARK_PATH/bin:$glue_lib/bin:$PATH
 
 WORKDIR /usr/local/share/applications
 
@@ -32,16 +28,16 @@ RUN yum install -y git wget python3 tar zip pandoc which gcc python3-devel postg
     && pip3 install pytest boto3 numpy scipy pandas PyGreSQL scikit-learn \
     && adduser glue -d /home/glue -s /bin/bash -m \
     && chown -R glue:glue /home/glue \
-    && wget $maven_URL \
-    && tar -xzf $maven_ZIP \
-    && rm -f apache-maven-3.6.0-bin.tar.gz \
-    && wget $glue_spark_url \
-    && tar -xzf $spark_zip \
-    && rm -f spark-2.4.3-bin-hadoop2.8.tgz \
+    && wget $maven_url -O $maven_zip \
+    && mkdir -p $maven_path && tar -xzf $maven_zip --strip-components=1 --directory $maven_path \
+    && rm -f $maven_zip \
+    && wget $glue_spark_url -O $spark_zip \
+    && mkdir -p $SPARK_HOME && tar -xzf $spark_zip --strip-components=1 --directory $SPARK_HOME \
+    && rm -f $spark_zip \
     && git clone $glue_repo \
     && cd aws-glue-libs \
     && git checkout glue-1.0 \
-    && cd $glue_bin \
+    && cd $glue_lib/bin \
     && sh glue-setup.sh \
     && sed -e '/mvn/ s/^#*/#/' -i glue-setup.sh \
     && cd ../../ && rm -rf aws-glue-libs/jarsv1/netty-all-4.0.23.Final.jar \
